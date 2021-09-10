@@ -17,6 +17,10 @@ struct Parking {
     mutating func checkInVehicle(_ vehicle: Vehicle, onFinish: (Bool) -> Void) {
         onFinish(vehicles.count < maximumVehicles && vehicles.insert(vehicle).inserted)
     }
+    
+    mutating func checkOutVehicle(_ plate: String, onSuccess: ((Int)->Void), onError: (()->Void)) {
+        
+    }
 }
 
 struct Vehicle: Parkable, Hashable {
@@ -64,62 +68,54 @@ enum VehicleType {
 
 var alkeParking = Parking()
 
-let car = Vehicle(plate: "AA111AA", type: VehicleType.car, checkInTime: Date(), discountCard: "DISCOUNT_CARD_001")
-let car2 = Vehicle(plate: "AA111AA", type: VehicleType.car, checkInTime: Date(), discountCard: "DISCOUNT_CARD_003")
-let moto = Vehicle(plate: "B222BBB", type: VehicleType.motorcycle, checkInTime: Date(), discountCard: nil)
-let miniBus = Vehicle(plate: "CC333CC", type: VehicleType.miniBus, checkInTime: Date(), discountCard: nil)
-let bus = Vehicle(plate: "DD444DD", type: VehicleType.bus, checkInTime: Date(), discountCard: "DISCOUNT_CARD_002")
-
-
-let vehicle1 = Vehicle(plate: "AA111AA", type: VehicleType.car, checkInTime: Date(), discountCard:
-                            "DISCOUNT_CARD_001")
-let vehicle2 = Vehicle(plate: "B222BBB", type: VehicleType.motorcycle, checkInTime: Date(), discountCard: nil)
-let vehicle3 = Vehicle(plate: "CC333CC", type: VehicleType.miniBus, checkInTime: Date(), discountCard:
-                            nil)
-let vehicle4 = Vehicle(plate: "DD444DD", type: VehicleType.bus, checkInTime: Date(), discountCard:
-                            "DISCOUNT_CARD_002")
-let vehicle5 = Vehicle(plate: "AA111BB", type: VehicleType.car, checkInTime: Date(), discountCard:
-                            "DISCOUNT_CARD_003")
-let vehicle6 = Vehicle(plate: "B222CCC", type: VehicleType.motorcycle, checkInTime: Date(), discountCard:
-                            "DISCOUNT_CARD_004")
-let vehicle7 = Vehicle(plate: "CC333DD", type: VehicleType.miniBus, checkInTime: Date(), discountCard: nil)
-let vehicle8 = Vehicle(plate: "DD444EE", type: VehicleType.bus, checkInTime: Date(), discountCard: "DISCOUNT_CARD_005")
-let vehicle9 = Vehicle(plate: "AA111CC", type: VehicleType.car, checkInTime: Date(), discountCard: nil)
-let vehicle10 = Vehicle(plate: "B222DDD", type: VehicleType.motorcycle, checkInTime: Date(), discountCard: nil)
-let vehicle11 = Vehicle(plate: "CC333EE", type: VehicleType.miniBus, checkInTime: Date(), discountCard: nil)
-let vehicle12 = Vehicle(plate: "DD444GG", type: VehicleType.bus, checkInTime: Date(), discountCard: "DISCOUNT_CARD_006")
-let vehicle13 = Vehicle(plate: "AA111DD", type: VehicleType.car, checkInTime: Date(), discountCard: "DISCOUNT_CARD_007")
-let vehicle14 = Vehicle(plate: "B222EEE", type: VehicleType.motorcycle, checkInTime: Date(), discountCard: nil)
-let vehicle15 = Vehicle(plate: "CC333FF", type: VehicleType.miniBus, checkInTime: Date(), discountCard:
-                                nil)
-
-alkeParking.vehicles.insert(car)
-alkeParking.vehicles.insert(moto)
-alkeParking.vehicles.insert(miniBus)
-alkeParking.vehicles.insert(bus)
-
-alkeParking.checkInVehicle(vehicle1, onFinish: <#T##(Bool) -> Void#>)
-
-alkeParking.vehicles.insert(vehicle1)
-alkeParking.vehicles.insert(vehicle2)
-alkeParking.vehicles.insert(vehicle3)
-alkeParking.vehicles.insert(vehicle4)
-alkeParking.vehicles.insert(vehicle5)
-alkeParking.vehicles.insert(vehicle6)
-alkeParking.vehicles.insert(vehicle7)
-alkeParking.vehicles.insert(vehicle8)
-alkeParking.vehicles.insert(vehicle9)
-alkeParking.vehicles.insert(vehicle10)
-alkeParking.vehicles.insert(vehicle11)
-alkeParking.vehicles.insert(vehicle12)
-alkeParking.vehicles.insert(vehicle13)
-alkeParking.vehicles.insert(vehicle14)
-alkeParking.vehicles.insert(vehicle15)
-
+//let car = Vehicle(plate: "AA111AA", type: VehicleType.car, checkInTime: Date(), discountCard: "DISCOUNT_CARD_001")
+//let car2 = Vehicle(plate: "AA111AA", type: VehicleType.car, checkInTime: Date(), discountCard: "DISCOUNT_CARD_003")
+//let moto = Vehicle(plate: "B222BBB", type: VehicleType.motorcycle, checkInTime: Date(), discountCard: nil)
+//let miniBus = Vehicle(plate: "CC333CC", type: VehicleType.miniBus, checkInTime: Date(), discountCard: nil)
+//let bus = Vehicle(plate: "DD444DD", type: VehicleType.bus, checkInTime: Date(), discountCard: "DISCOUNT_CARD_002")
 
 //print(alkeParking.vehicles.insert(car).inserted)  // true
 //print(alkeParking.vehicles.insert(car2).inserted)  // false
 
+let vehicles = [
+    Vehicle(plate: "AA111AA", type: VehicleType.car, checkInTime: Date(), discountCard:
+                "DISCOUNT_CARD_001"),
+    Vehicle(plate: "B222BBB", type: VehicleType.motorcycle, checkInTime: Date(), discountCard: nil),
+    Vehicle(plate: "CC333CC", type: VehicleType.miniBus, checkInTime: Date(), discountCard:
+                nil),
+    Vehicle(plate: "DD444DD", type: VehicleType.bus, checkInTime: Date(), discountCard:
+                "DISCOUNT_CARD_002"),
+    Vehicle(plate: "DD444DD", type: VehicleType.bus, checkInTime: Date(), discountCard:
+                "DISCOUNT_CARD_002"),
+    Vehicle(plate: "AA111BB", type: VehicleType.car, checkInTime: Date(), discountCard:
+                "DISCOUNT_CARD_003"),
+    Vehicle(plate: "B222CCC", type: VehicleType.motorcycle, checkInTime: Date(), discountCard:
+                "DISCOUNT_CARD_004"),
+    Vehicle(plate: "CC333DD", type: VehicleType.miniBus, checkInTime: Date(), discountCard: nil),
+    Vehicle(plate: "DD444EE", type: VehicleType.bus, checkInTime: Date(), discountCard: "DISCOUNT_CARD_005"),
+    Vehicle(plate: "AA111CC", type: VehicleType.car, checkInTime: Date(), discountCard: nil),
+    Vehicle(plate: "B222DDD", type: VehicleType.motorcycle, checkInTime: Date(), discountCard: nil),
+    Vehicle(plate: "CC333EE", type: VehicleType.miniBus, checkInTime: Date(), discountCard: nil),
+    Vehicle(plate: "DD444GG", type: VehicleType.bus, checkInTime: Date(), discountCard: "DISCOUNT_CARD_006"),
+    Vehicle(plate: "AA111DD", type: VehicleType.car, checkInTime: Date(), discountCard: "DISCOUNT_CARD_007"),
+    Vehicle(plate: "B222EEE", type: VehicleType.motorcycle, checkInTime: Date(), discountCard: nil),
+    Vehicle(plate: "CC333FF", type: VehicleType.miniBus, checkInTime: Date(), discountCard:
+                nil),
+    Vehicle(plate: "XX333EE", type: VehicleType.miniBus, checkInTime: Date(), discountCard: nil),
+    Vehicle(plate: "YY444GG", type: VehicleType.bus, checkInTime: Date(), discountCard: "DISCOUNT_CARD_006"),
+    Vehicle(plate: "ZZ111DD", type: VehicleType.car, checkInTime: Date(), discountCard: "DISCOUNT_CARD_007"),
+    Vehicle(plate: "WW22EEE", type: VehicleType.motorcycle, checkInTime: Date(), discountCard: nil),
+    Vehicle(plate: "RR333FF", type: VehicleType.miniBus, checkInTime: Date(), discountCard:
+                nil),
+    Vehicle(plate: "RR333GG", type: VehicleType.miniBus, checkInTime: Date(), discountCard:
+                nil)
+]
+
+vehicles.forEach { vehicle in
+    alkeParking.checkInVehicle(vehicle) { result in
+        print("\(result ? "Welcome to AlkeParking!" : "Sorry, the check-in failed")")
+    }
+}
 
 
 

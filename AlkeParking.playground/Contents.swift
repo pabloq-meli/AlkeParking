@@ -14,6 +14,8 @@ struct Parking {
     var vehicles: Set<Vehicle> = []
     let maximumVehicles = 20
     
+    var total: (Int, Int) = (0,0)
+    
     mutating func checkInVehicle(_ vehicle: Vehicle, onFinish: (Bool) -> Void) {
         guard vehicles.count < maximumVehicles else {
             onFinish(false)
@@ -31,6 +33,8 @@ struct Parking {
         }
         let fee = calculateFee(vehicle: vehicle)
         vehicles.remove(vehicle)
+        total.0 += 1
+        total.1 += fee
         onSuccess(fee)
     }
     
@@ -42,6 +46,19 @@ struct Parking {
             fee += additional
         }
         return Int(fee * (vehicle.discountCard != nil ? 0.85 : 1))
+    }
+    
+    func showTotalEarnings() {
+        print("\(total.0) vehicles have checked out and have earnings of \(total.1)")
+    }
+    
+    func showActiveVehicles() {
+        if(!vehicles.isEmpty) {
+            print("Active vehicles")
+            vehicles.forEach { print($0.plate) }
+        } else {
+            print("No active vehicles")
+        }
     }
 }
 
@@ -139,6 +156,8 @@ vehicles.forEach { vehicle in
     }
 }
 
+alkeParking.showActiveVehicles()
+
 vehicles.forEach { vehicle in
     alkeParking.checkOutVehicle(vehicle.plate) { fee in
         print("Your fee is $\(fee). Come back soon")
@@ -146,3 +165,5 @@ vehicles.forEach { vehicle in
         print("Sorry, the check-out failed")
     }
 }
+alkeParking.showTotalEarnings()
+alkeParking.showActiveVehicles()

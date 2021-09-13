@@ -17,13 +17,7 @@ struct Parking {
     var total: (Int, Int) = (0,0)
     
     mutating func checkInVehicle(_ vehicle: Vehicle, onFinish: (Bool) -> Void) {
-        guard vehicles.count < maximumVehicles else {
-            onFinish(false)
-            return
-        }
-        let inserted = vehicles.insert(vehicle).inserted
-        onFinish(inserted)
-        //onFinish(vehicles.count < maximumVehicles && vehicles.insert(vehicle).inserted)
+        onFinish(vehicles.count < maximumVehicles && vehicles.insert(vehicle).inserted)
     }
     
     mutating func checkOutVehicle(_ plate: String, onSuccess: ((Int)->Void), onError: (()->Void)) {
@@ -154,7 +148,7 @@ vehicles.forEach { vehicle in
     alkeParking.checkOutVehicle(vehicle.plate) { fee in
         print("Your vehicle \(vehicle.plate) has a fee of $\(fee). Come back soon")
     } onError: {
-        print("Car is not parked")
+        print("Sorry, the check-out failed")
     }
 }
 alkeParking.showTotalEarnings()

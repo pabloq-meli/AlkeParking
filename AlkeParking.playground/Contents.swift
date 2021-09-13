@@ -36,10 +36,10 @@ struct Parking {
         // Luego de las 2 primeras horas se cobrarán $5 por cada 15 minutos o fracción.
         var fee = Double(vehicle.type.parkingRate)
         if(vehicle.parkedTime > 120) {
-            let additional = ((fee - 120) / 15) * 5
+            let additional = ((Double(vehicle.parkedTime) - 120) / 15) * 5
             fee += additional
         }
-        return Int(fee * (vehicle.discountCard != nil ? 0.85 : 1))
+        return Int((fee * (vehicle.discountCard != nil ? 0.85 : 1)).rounded(.up))
     }
     
     func showTotalEarnings() {
@@ -72,7 +72,7 @@ struct Vehicle: Parkable, Hashable {
         hasher.combine(plate)
     }
     
-    static func ==(lhs: Vehicle, rhs: Vehicle) -> Bool {
+    static func == (lhs: Vehicle, rhs: Vehicle) -> Bool {
         return lhs.plate == rhs.plate
     }
 }

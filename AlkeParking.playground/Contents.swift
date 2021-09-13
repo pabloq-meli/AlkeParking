@@ -107,15 +107,7 @@ enum VehicleType {
 
 var alkeParking = Parking()
 
-//let car = Vehicle(plate: "AA111AA", type: VehicleType.car, checkInTime: Date(), discountCard: "DISCOUNT_CARD_001")
-//let car2 = Vehicle(plate: "AA111AA", type: VehicleType.car, checkInTime: Date(), discountCard: "DISCOUNT_CARD_003")
-//let moto = Vehicle(plate: "B222BBB", type: VehicleType.motorcycle, checkInTime: Date(), discountCard: nil)
-//let miniBus = Vehicle(plate: "CC333CC", type: VehicleType.miniBus, checkInTime: Date(), discountCard: nil)
-//let bus = Vehicle(plate: "DD444DD", type: VehicleType.bus, checkInTime: Date(), discountCard: "DISCOUNT_CARD_002")
-
-//print(alkeParking.vehicles.insert(car).inserted)  // true
-//print(alkeParking.vehicles.insert(car2).inserted)  // false
-
+// uno repetido y uno que no se agrega por tamaño
 let vehicles = [
     Vehicle(plate: "AA111AA", type: VehicleType.car, checkInTime: Date(), discountCard:
                 "DISCOUNT_CARD_001"),
@@ -160,9 +152,9 @@ alkeParking.showActiveVehicles()
 
 vehicles.forEach { vehicle in
     alkeParking.checkOutVehicle(vehicle.plate) { fee in
-        print("Your fee is $\(fee). Come back soon")
+        print("Your vehicle \(vehicle.plate) has a fee of $\(fee). Come back soon")
     } onError: {
-        print("Sorry, the check-out failed")
+        print("Car is not parked")
     }
 }
 alkeParking.showTotalEarnings()

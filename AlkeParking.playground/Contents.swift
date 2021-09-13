@@ -15,11 +15,33 @@ struct Parking {
     let maximumVehicles = 20
     
     mutating func checkInVehicle(_ vehicle: Vehicle, onFinish: (Bool) -> Void) {
-        onFinish(vehicles.count < maximumVehicles && vehicles.insert(vehicle).inserted)
+        guard vehicles.count < maximumVehicles else {
+            onFinish(false)
+            return
+        }
+        let inserted = vehicles.insert(vehicle).inserted
+        onFinish(inserted)
+        //onFinish(vehicles.count < maximumVehicles && vehicles.insert(vehicle).inserted)
     }
     
     mutating func checkOutVehicle(_ plate: String, onSuccess: ((Int)->Void), onError: (()->Void)) {
-        
+        guard let vehicle = vehicles.first(where: { $0.plate == plate }) else {
+            onError()
+            return
+        }
+        let fee = calculateFee(vehicle: vehicle)
+        vehicles.remove(vehicle)
+        onSuccess(fee)
+    }
+    
+    private func calculateFee(vehicle: Vehicle) -> Int {
+        // Luego de las 2 primeras horas se cobrarán $5 por cada 15 minutos o fracción.
+        var fee = Double(vehicle.type.parkingRate)
+        if(vehicle.parkedTime > 120) {
+            let additional = ((fee - 120) / 15) * 5
+            fee += additional
+        }
+        return Int(fee * (vehicle.discountCard != nil ? 0.85 : 1))
     }
 }
 
@@ -113,9 +135,14 @@ let vehicles = [
 
 vehicles.forEach { vehicle in
     alkeParking.checkInVehicle(vehicle) { result in
-        print("\(result ? "Welcome to AlkeParking!" : "Sorry, the check-in failed")")
+        print(result ? "Welcome to AlkeParking!" : "Sorry, the check-in failed")
     }
 }
 
-
-
+vehicles.forEach { vehicle in
+    alkeParking.checkOutVehicle(vehicle.plate) { fee in
+        print("Your fee is $\(fee). Come back soon")
+    } onError: {
+        print("Sorry, the check-out failed")
+    }
+}
